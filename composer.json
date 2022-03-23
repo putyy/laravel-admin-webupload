@@ -1,0 +1,33 @@
+{
+    "name": "putyy/laravel-admin-webupload",
+    "description": "laravel-admin 前端上传文件功能封装......",
+    "type": "library",
+    "keywords": ["laravel-admin", "extension"],
+    "homepage": "https://github.com/putyy/laravel-admin-webupload",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "putyy",
+            "email": "putyy@qq.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "encore/laravel-admin": "~1.6"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Pt\\LaravelAdminWebUpload\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Pt\\LaravelAdminWebUpload\\LaravelAdminWebUploadServiceProvider"
+            ]
+        }
+    }
+}
