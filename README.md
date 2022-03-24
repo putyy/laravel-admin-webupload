@@ -1,5 +1,5 @@
 ## laravel-admin-webupload
-laravel-admin 上传文件前端封装
+laravel-admin 前端直传封装
 
 ### 安装
 ```shell
