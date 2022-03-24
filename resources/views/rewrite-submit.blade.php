@@ -19,9 +19,10 @@
         height: auto;
     }
 </style>
-<script src="/vendor/putyy/laravel-admin-webupload/rewriteSubmit.js"></script>
 <script type="application/javascript">
     $(function () {
-        rewriteSubmitApp.main("{{$form_url}}", "{{$scene_url}}");
+        $.getScript('/vendor/putyy/laravel-admin-webupload/rewriteSubmit.js?v=20220324', function (){
+            rewriteSubmitApp.main("{{$scene_url}}");
+        })
     })
 </script>

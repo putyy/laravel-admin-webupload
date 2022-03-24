@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Pt\LaravelAdminWebUpload;
+namespace Pt\LaravelAdminWebUpload\Params;
 
 class LocalParam extends \stdClass
 {
@@ -22,4 +22,10 @@ class LocalParam extends \stdClass
      * @var
      */
     public $url;
+
+    /**
+     * 上传地址
+     * @var
+     */
+    public $server_url;
 }

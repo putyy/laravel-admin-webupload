@@ -6,22 +6,13 @@ namespace Pt\LaravelAdminWebUpload\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Pt\LaravelAdminWebUpload\AliyunParam;
-use Pt\LaravelAdminWebUpload\LocalParam;
-use Pt\LaravelAdminWebUpload\QiniuParam;
+use Pt\LaravelAdminWebUpload\Params\AliyunParam;
+use Pt\LaravelAdminWebUpload\Params\LocalParam;
+use Pt\LaravelAdminWebUpload\Params\QiniuParam;
 
-abstract class KitUploadController extends Controller
+abstract class WebUploadController extends Controller
 {
-    public function upload()
-    {
-        return response()->json([
-            'code' => 1,
-            'msg' => 'ok',
-            'data' => null
-        ]);
-    }
-
-    public function getScene(Request $request): JsonResponse
+    public function scene(Request $request): JsonResponse
     {
         try {
             $platform = $request->get('platform');
@@ -53,6 +44,7 @@ abstract class KitUploadController extends Controller
     }
 
     /**
+     * 自定义存储前端直传上传参数
      * @param string $scene
      * @param string $other
      * @return LocalParam
@@ -60,6 +52,7 @@ abstract class KitUploadController extends Controller
     abstract protected function local(string $scene, string $other): LocalParam;
 
     /**
+     * 七牛云前端直传上传参数
      * @param string $scene
      * @param string $other
      * @return QiniuParam
@@ -67,6 +60,7 @@ abstract class KitUploadController extends Controller
     abstract protected function qiniu(string $scene, string $other): QiniuParam;
 
     /**
+     * 阿里云前端直传上传参数
      * @param string $scene
      * @param string $other
      * @return AliyunParam

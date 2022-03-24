@@ -1,19 +1,11 @@
 var rewriteSubmitApp = {
     data: {
-        form_url: null,
         scene_url: null,
         isResQiniuJs: false,
         isLoading: false,
     },
-    main: function (form_url, scene_url) {
-        this.data.form_url = form_url;
-        this.data.form_url = scene_url;
-        if (!this.data.form_url) {
-            this.data.form_url = $('button:submit').parents('form').attr('action');
-        }
-        if (!this.data.scene_url) {
-            this.data.scene_url = "/admin/upload-scene";
-        }
+    main: function (scene_url) {
+        this.data.scene_url = scene_url;
         if ($('.kit-rewrite-submit').length === 0) {
             $(".btn-primary[type='submit']").after('<button type="button" class="btn btn-primary kit-rewrite-submit">提交</button>').hide();
         }
@@ -85,10 +77,15 @@ var rewriteSubmitApp = {
                                         reject({msg: res.res.message});
                                         return;
                                     }
+                                    var sourceObj = $(that).parent(".kit").find(".source-address");
+                                    if(sourceObj.length){
+                                        sourceObj.attr("src", sceneData.url);
+                                    }
                                     $(that).parent().find(".kit-data").val(res.key)
+                                    $(that).val("");
                                     // todo success
                                     resolve();
-                                })
+                                });
                                 break;
                             case "aliyun":
                                 rewriteSubmitApp.method.aliyun({
@@ -108,17 +105,23 @@ var rewriteSubmitApp = {
                                         return;
                                     }
                                     // todo success
+                                    var sourceObj = $(that).parent(".kit").find(".source-address");
+                                    if(sourceObj.length){
+                                        sourceObj.attr("src", sceneData.url);
+                                    }
                                     $(that).parent().find(".kit-data").val(res.key)
+                                    $(that).val("");
                                     resolve();
-                                })
+                                });
                                 break;
                             case 'local':
                             default:
-                                rewriteSubmitApp.method.aliyun({
+                                rewriteSubmitApp.method.local({
                                     file: $(that)[0].files[0],
                                     server_url: sceneData.server_url,
                                     key: sceneData.key,
                                     url: sceneData.url,
+                                    token: sceneData.token,
                                 }, function (res) {
                                     if (res.code === 0) {
                                         rewriteSubmitApp.data.isLoading = false;
@@ -127,9 +130,14 @@ var rewriteSubmitApp = {
                                         return;
                                     }
                                     // todo success
+                                    var sourceObj = $(that).parent(".kit").find(".source-address");
+                                    if(sourceObj.length){
+                                        sourceObj.attr("src", sceneData.url);
+                                    }
                                     $(that).parent().find(".kit-data").val(res.key)
+                                    $(that).val("");
                                     resolve();
-                                })
+                                });
                         }
                     })
                 });
@@ -161,6 +169,11 @@ var rewriteSubmitApp = {
             $.ajax({
                 method: 'post',
                 data: request,
+                processData: false,
+                cache: false,
+                async: false,
+                contentType: false,
+                type: 'post',
                 url: data.server_url,
                 success: function (callback, res) {
                     func({

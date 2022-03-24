@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Pt\LaravelAdminWebUpload;
+namespace Pt\LaravelAdminWebUpload\Params;
 
 class QiniuParam extends \stdClass
 {

@@ -34,7 +34,7 @@ trait BaseKit
         return $this->defaultAttribute('data-platform', 'qiniu');
     }
 
-    public function toAli(): static
+    public function toAliyun(): static
     {
         return $this->defaultAttribute('data-platform', 'aliyun');
     }

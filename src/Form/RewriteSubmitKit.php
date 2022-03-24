@@ -12,8 +12,7 @@ class RewriteSubmitKit extends Field
     public function render()
     {
         $this->addVariables([
-            'form_url' => $this->variables['form_url'] ?? '',
-            'scene_url' => $this->variables['scene_url'] ?? '',
+            'scene_url' => $this->variables['scene_url'] ?? '/admin/upload-scene',
         ]);
         return parent::render();
     }
