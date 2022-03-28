@@ -9,7 +9,7 @@ class VideoKit extends Field
 {
     use BaseKit;
 
-    protected $view = 'laravel-admin-webupload::form::video';
+    protected $view = 'laravel-admin-webupload::video';
 
     public function render()
     {
