@@ -9,11 +9,11 @@ class AudioKit extends Field
 {
     use BaseKit;
 
-    protected $view = 'laravel-admin-webupload::audio';
+    protected $view = 'laravel-admin-webupload::file';
 
     public function render()
     {
-        $this->setDefaultAttribute()->defaultAttribute('accept', 'audio/mp3');
+        $this->setDefaultAttribute()->uploadType(2)->defaultAttribute('accept', 'audio/mp3');
         return parent::render();
     }
 }

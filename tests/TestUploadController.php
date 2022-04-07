@@ -55,18 +55,18 @@ class TestUploadController extends WebUploadController
         'shop_goods' => 'shop_goods',
     ];
 
-    protected function suffix(string $other): string
+    protected function suffix(int $type): string
     {
         $suffix = '';
-        switch ($other) {
-            case 'img':
+        switch ($type) {
+            case 1:
                 $suffix = '.png';
                 break;
-            case 'video':
-                $suffix = '.mp4';
-                break;
-            case 'audio':
+            case 2:
                 $suffix = '.mp3';
+                break;
+            case 3:
+                $suffix = '.mp4';
                 break;
             default:
                 break;
@@ -81,15 +81,16 @@ class TestUploadController extends WebUploadController
 
     /**
      * @param string $scene
+     * @param int $type 1图片 2音频 3视频 4文件
      * @param string $other
      * @return LocalParam
      */
-    protected function local(string $scene, string $other): LocalParam
+    protected function local(string $scene, int $type, string $other = ''): LocalParam
     {
         // TODO: Implement local() method.
         $config = config('upload.local');
         $param = new LocalParam();
-        $param->key = $this->createKey($scene) . $this->suffix($other);
+        $param->key = $this->createKey($scene) . $this->suffix($type);
         $param->url = $config['domain'] . '/' . $param->key;;
         // 可以存储到redis 或者 切换可解密的方式生成token, 在server_url 对应的服务对token鉴权
         $param->token = md5($param->key);
@@ -100,17 +101,18 @@ class TestUploadController extends WebUploadController
     /**
      * 需要安装 qiniu/php-sdk 包.
      * @param string $scene
+     * @param int $type 1图片 2音频 3视频 4文件
      * @param string $other
      * @return QiniuParam
      */
-    protected function qiniu(string $scene, string $other): QiniuParam
+    protected function qiniu(string $scene, int $type, string $other = ''): QiniuParam
     {
         // TODO: Implement qiniu() method.
         $config = config('upload.qiniu');
         $returnBody = '{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)","name":"$(x:name)","url":"' . $config['domain'] . '/' . '$(key)"}';
         $policy = array('returnBody' => $returnBody);
         $auth = new \Qiniu\Auth($config['ak'], $config['sk']);
-        $key = $this->createKey($scene) . $this->suffix($other);
+        $key = $this->createKey($scene) . $this->suffix($type);
         $param = new QiniuParam();
         $param->url = $config['domain'] . '/' . $key;
         $param->key = $key;
@@ -120,15 +122,16 @@ class TestUploadController extends WebUploadController
 
     /**
      * @param string $scene
+     * @param int $type 1图片 2音频 3视频 4文件
      * @param string $other
      * @return AliyunParam
      * @throws \Exception
      */
-    protected function aliyun(string $scene, string $other): AliyunParam
+    protected function aliyun(string $scene, int $type, string $other = ''): AliyunParam
     {
         // TODO: Implement aliyun() method.
         $config = config('upload.aliyun');
-        $key = $this->createKey($scene) . $this->suffix($other);
+        $key = $this->createKey($scene) . $this->suffix($type);
 
         $now = time();
         // policy 有效时间s, policy过了这个有效时间，将不能使用

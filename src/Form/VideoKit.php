@@ -9,11 +9,11 @@ class VideoKit extends Field
 {
     use BaseKit;
 
-    protected $view = 'laravel-admin-webupload::video';
+    protected $view = 'laravel-admin-webupload::file';
 
     public function render()
     {
-        $this->setDefaultAttribute()->defaultAttribute('accept', 'video/*');
+        $this->setDefaultAttribute()->uploadType(3)->defaultAttribute('accept', 'video/*');
         return parent::render();
     }
 }

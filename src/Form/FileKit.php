@@ -13,7 +13,7 @@ class FileKit extends Field
 
     public function render()
     {
-        $this->setDefaultAttribute();
+        $this->setDefaultAttribute()->uploadType(4);
         return parent::render();
     }
 }

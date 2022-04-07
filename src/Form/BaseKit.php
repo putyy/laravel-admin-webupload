@@ -23,7 +23,7 @@ trait BaseKit
     protected function setDefaultAttribute(): static
     {
         // 30 * 1024 * 1024 == 31457280
-        return $this->defaultAttribute('data-max', 31457280)
+        return $this->defaultAttribute('data-size', 31457280)
             ->defaultAttribute('data-scene', '')
             ->defaultAttribute('data-other', '')
             ->defaultAttribute('data-platform', 'local');
@@ -42,5 +42,31 @@ trait BaseKit
     public function toLocal(): static
     {
         return $this->defaultAttribute('data-platform', 'local');
+    }
+
+    protected function uploadType(int $type = 1): static
+    {
+        // upload-type 1图片 2音频 3视频 4文件
+        return $this->addVariables(['uploadType' => $type]);
+    }
+
+    public function kitFiles(array $data): static
+    {
+        $this->view = 'laravel-admin-webupload::files';
+        $this->addVariables(array_merge([
+            'src' => 'src',
+            // 最大数量
+            'max'=>12,
+            // 最少数量 -1不限制
+            'min'=>1,
+// 文件列表
+//            'files' => [
+//                [
+//                    'other'=>'',
+//                    'src'=>'',
+//                ]
+//            ]
+        ],$data));
+        return $this;
     }
 }

@@ -9,6 +9,8 @@ use Illuminate\Support\ServiceProvider;
 use Pt\LaravelAdminWebUpload\Form\AudioKit;
 use Pt\LaravelAdminWebUpload\Form\FileKit;
 use Pt\LaravelAdminWebUpload\Form\ImageKit;
+use Pt\LaravelAdminWebUpload\Form\filesKit;
+use Pt\LaravelAdminWebUpload\Form\ImagesKit;
 use Pt\LaravelAdminWebUpload\Form\RewriteSubmitKit;
 use Pt\LaravelAdminWebUpload\Form\VideoKit;
 
@@ -35,9 +37,9 @@ class LaravelAdminWebUploadServiceProvider extends ServiceProvider
         }
         Admin::booting(function () {
             Form::extend('imageKit', ImageKit::class);
+            Form::extend('fileKit', FileKit::class);
             Form::extend('audioKit', AudioKit::class);
             Form::extend('videoKit', VideoKit::class);
-            Form::extend('fileKit', FileKit::class);
             Form::extend('rewriteSubmitKit', RewriteSubmitKit::class);
         });
     }

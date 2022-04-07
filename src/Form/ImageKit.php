@@ -9,11 +9,11 @@ class ImageKit extends Field
 {
     use BaseKit;
 
-    protected $view = 'laravel-admin-webupload::image';
+    protected $view = 'laravel-admin-webupload::file';
 
     public function render()
     {
-        $this->setDefaultAttribute()->defaultAttribute('accept', 'image/*');
+        $this->setDefaultAttribute()->uploadType()->defaultAttribute('accept', 'image/*');
         return parent::render();
     }
 }

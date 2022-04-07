@@ -40,7 +40,8 @@ Route::group([
 > 
 > rewriteSubmitKit 可指定变量: scene_url(上传所需信息获取地址 默认: /admin/upload-scene)
 
-> 举例:
+### 举例
+> 单文件:
 ```php
 protected function form()
 {
@@ -93,4 +94,57 @@ protected function form()
 }
 ```
 
+> 多文件(增加了kitFiles方法):
+```php
+protected function form()
+{
+    ...
+    // 上传图片到七牛云
+    if (request()->isMethod('GET')) {
+        $id = request()->route('xxx_model');
+        $list = XxxModel::query()->where('goods_id', $id)->get()->toArray();
+        $files = [];
+        foreach ($list as   $value){
+            $files[] = [
+                'other'=>$value['id'],
+                'src' => getImgUrl($value['img_url']),
+            ];
+        }
+        // 主要在 kitFiles 这方法定义的一些变量 以下两个为必须 其他的可以看 \Pt\LaravelAdminWebUpload\Form\BaseKit::kitFiles
+        $form->imageKit('goods_banner', '轮播图')->kitFiles([
+            'files' => $files,
+        ])
+        ->attribute(['data-scene' => SceneConst::GOODS_COVER])
+        ->toQiniu();
+    }
+    ...
+    $form->saving(function (Form $form) {
+        // todo 存入数据库时去掉全地址等操作
+        // 比如:
+        // $form->img_url = "去掉http://xxx.com/ 保留 upload/ss/ss/ss.png";
+    });
+    
+     //保存后回调 用于单独处理多文件上传保存
+    $form->saved(function (Form $form) {
+        //...
+        $goods_banner = request()->post('goods_banner');
+        $goods_banner = explode('&', $goods_banner);
+        $add = [];
+        foreach ($goods_banner as $sort => $value) {
+            $add[] = [
+                'goods_id' => $form->model()->id,
+                'img_url' => getThatSavePath(explode('#', $value)[0]),
+                'sort' => $sort + 1
+            ];
+        }
+        XxxModel::query()->where('goods_id', $form->model()->id)->delete();
+        XxxModel::query()->insert($add);
+    });
+    
+    // 这一步必须，用于拦截原有提交以便直传文件到对应的服务
+    // 变量: scene_url
+    $form->rewriteSubmitKit();
+    return $form;
+}
+```
 ### PS: 更多用法请看源码

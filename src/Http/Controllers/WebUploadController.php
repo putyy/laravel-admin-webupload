@@ -18,16 +18,17 @@ abstract class WebUploadController extends Controller
             $platform = $request->get('platform');
             $scene = $request->get('scene');
             $other = $request->get('other');
+            $type = (int)$request->get('type');
             switch ($platform) {
                 case 'qiniu':
-                    $data = $this->qiniu($scene, $other);
+                    $data = $this->qiniu($scene, $type, $other);
                     break;
                 case 'aliyun':
-                    $data = $this->aliyun($scene, $other);
+                    $data = $this->aliyun($scene, $type, $other);
                     break;
                 case 'local':
                 default:
-                    $data = $this->local($scene, $other);
+                    $data = $this->local($scene, $type, $other);
             }
             return response()->json([
                 'code' => 1,
@@ -49,7 +50,7 @@ abstract class WebUploadController extends Controller
      * @param string $other
      * @return LocalParam
      */
-    abstract protected function local(string $scene, string $other): LocalParam;
+    abstract protected function local(string $scene, int $type, string $other = ''): LocalParam;
 
     /**
      * 七牛云前端直传上传参数
@@ -57,7 +58,7 @@ abstract class WebUploadController extends Controller
      * @param string $other
      * @return QiniuParam
      */
-    abstract protected function qiniu(string $scene, string $other): QiniuParam;
+    abstract protected function qiniu(string $scene, int $type, string $other = ''): QiniuParam;
 
     /**
      * 阿里云前端直传上传参数
@@ -65,5 +66,5 @@ abstract class WebUploadController extends Controller
      * @param string $other
      * @return AliyunParam
      */
-    abstract protected function aliyun(string $scene, string $other): AliyunParam;
+    abstract protected function aliyun(string $scene, int $type, string $other = ''): AliyunParam;
 }
